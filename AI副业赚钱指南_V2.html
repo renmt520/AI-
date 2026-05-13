@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AI工具副业赚钱指南</title>
+    <style>
+        /* ===== 基础设置 ===== */
+        :root {
+            --bg-dark: #0a0e17;
+            --bg-card: #111827;
+            --primary: #06b6d4;
+            --primary-glow: #22d3ee;
+            --accent: #f472b6;
+            --text-white: #f8fafc;
+            --text-gray: #94a3b8;
+            --gradient-1: linear-gradient(135deg, #06b6d4, #8b5cf6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            touch-action: pan-y;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-white);
+        }
+
+        /* ===== 4K高清容器 ===== */
+        .presentation {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ===== 背景效果 ===== */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(6, 182, 212, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(6, 182, 212, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.2;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow-1 {
+            top: -150px;
+            right: -150px;
+            background: var(--primary);
+        }
+
+        .bg-glow-2 {
+            bottom: -150px;
+            left: -150px;
+            background: var(--accent);
+        }
+
+        /* ===== 隐蔽水印 ===== */
+        .watermark-footer {
+            position: fixed;
+            bottom: 15px;
+            right: 20px;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.1);
+            letter-spacing: 3px;
+            z-index: 100;
+            pointer-events: none;
+            font-weight: 300;
+        }
+
+        .watermark-diagonal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-25deg);
+            font-size: 60px;
+            font-weight: 100;
+            color: rgba(255, 255, 255, 0.015);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+            letter-spacing: 15px;
+        }
+
+        /* ===== 幻灯片 ===== */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 50px 30px 60px;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            transform: translateY(30px);
+            z-index: 1;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            z-index: 2;
+        }
+
+        /* ===== 章节标题 ===== */
+        .chapter-title {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 10px;
+            color: var(--primary);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 20px;
+            background: rgba(6, 182, 212, 0.05);
+            font-weight: 400;
+            white-space: nowrap;
+        }
+
+        /* ===== 页面标题 ===== */
+        .slide-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--text-white) 0%, var(--primary-glow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            padding-top: 20px;
+        }
+
+        /* ===== 重点高亮 ===== */
+        .highlight {
+            color: var(--primary-glow);
+            font-weight: 600;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(139, 92, 246, 0.15));
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 8px;
+            padding: 10px 15px;
+            display: inline-block;
+        }
+
+        /* ===== 封面页 ===== */
+        .cover-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .cover-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--text-white) 0%, var(--primary-glow) 50%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cover-subtitle {
+            font-size: 14px;
+            color: var(--text-gray);
+            margin-bottom: 30px;
+        }
+
+        .cover-tags {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cover-tag {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        /* ===== 卡片布局 ===== */
+        .cards-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid rgba(255,255,255,0.04);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient-1);
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .card-desc {
+            font-size: 12px;
+            color: var(--text-gray);
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .card-price {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-glow);
+        }
+
+        .card-price-label {
+            font-size: 11px;
+            color: var(--text-gray);
+        }
+
+        /* ===== 流程图 ===== */
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .flow-step:not(:last-child)::after {
+            content: '↓';
+            position: absolute;
+            left: 50%;
+            bottom: -20px;
+            transform: translateX(-50%);
+            color: rgba(6, 182, 212, 0.3);
+            font-size: 16px;
+        }
+
+        .flow-circle {
+            width: 50px;
+            height: 50px;
+            min-width: 50px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 600;
+            margin-right: 15px;
+        }
+
+        .flow-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .flow-tasks {
+            font-size: 11px;
+            color: var(--text-gray);
+        }
+
+        /* ===== 表格 ===== */
+        .table-container {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            font-size: 12px;
+        }
+
+        .info-table th {
+            background: linear-gradient(90deg, var(--primary), #8b5cf6);
+            padding: 12px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .info-table td {
+            padding: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .info-table .tool-name {
+            color: var(--primary-glow);
+            font-weight: 500;
+        }
+
+        .info-table .free-tag {
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+        }
+
+        /* ===== 列表 ===== */
+        .action-list {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .action-item {
+            display: flex;
+            align-items: center;
+            padding: 14px;
+            background: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .action-num {
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+            background: var(--gradient-1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 15px;
+        }
+
+        .action-text {
+            font-size: 13px;
+        }
+
+        .action-time {
+            color: var(--primary-glow);
+            font-weight: 500;
+            margin-right: 8px;
+            white-space: nowrap;
+        }
+
+        /* ===== 目录页 ===== */
+        .toc-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .toc-item {
+            display: flex;
+            align-items: center;
+            padding: 14px;
+            background: var(--bg-card);
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .toc-num {
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+            background: var(--gradient-1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+
+        .toc-text {
+            font-size: 14px;
+        }
+
+        /* ===== 结束页 ===== */
+        .end-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .end-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary-glow), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .end-subtitle {
+            font-size: 14px;
+            color: var(--text-gray);
+            margin-bottom: 30px;
+        }
+
+        .end-slogan {
+            font-size: 16px;
+            padding: 15px 30px;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 12px;
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        /* ===== 底部进度条 ===== */
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(255,255,255,0.05);
+            z-index: 100;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-1);
+            transition: width 0.3s ease;
+        }
+
+        /* ===== 页码指示器 ===== */
+        .page-indicator {
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+            z-index: 100;
+            max-width: 90%;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .page-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .page-dot.active {
+            background: var(--primary);
+            width: 18px;
+            border-radius: 3px;
+        }
+
+        /* ===== 导航按钮 ===== */
+        .nav-buttons {
+            position: fixed;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-gray);
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: rgba(6, 182, 212, 0.15);
+            border-color: rgba(6, 182, 212, 0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.2;
+            cursor: not-allowed;
+        }
+
+        /* ===== 工具页布局 ===== */
+        .tools-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .tool-icon {
+            font-size: 24px;
+            margin-right: 12px;
+        }
+
+        .tool-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .tool-use {
+            color: var(--text-gray);
+            font-size: 11px;
+        }
+
+        /* ===== 触摸提示 ===== */
+        .touch-hint {
+            position: fixed;
+            bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-gray);
+            font-size: 10px;
+            z-index: 50;
+            opacity: 0.4;
+        }
+
+        /* ===== PC端样式 ===== */
+        @media (min-width: 768px) {
+            .slide {
+                padding: 60px 60px 70px;
+            }
+
+            .slide-title {
+                font-size: 32px;
+                margin-bottom: 30px;
+            }
+
+            .cover-title {
+                font-size: 48px;
+                margin-bottom: 20px;
+            }
+
+            .cover-subtitle {
+                font-size: 20px;
+                margin-bottom: 40px;
+            }
+
+            .cover-tags {
+                gap: 15px;
+            }
+
+            .cover-tag {
+                padding: 10px 22px;
+                font-size: 14px;
+            }
+
+            .cards-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+
+            .card {
+                padding: 24px;
+            }
+
+            .card-icon {
+                width: 46px;
+                height: 46px;
+                font-size: 22px;
+                margin-bottom: 16px;
+            }
+
+            .card-title {
+                font-size: 18px;
+            }
+
+            .card-desc {
+                font-size: 13px;
+            }
+
+            .card-price {
+                font-size: 22px;
+            }
+
+            .toc-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .toc-item {
+                padding: 18px;
+            }
+
+            .toc-num {
+                width: 38px;
+                height: 38px;
+                font-size: 15px;
+            }
+
+            .toc-text {
+                font-size: 16px;
+            }
+
+            .flow-container {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
+
+            .flow-step {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .flow-step::after {
+                display: none;
+            }
+
+            .flow-circle {
+                margin-right: 0;
+                margin-bottom: 15px;
+                width: 60px;
+                height: 60px;
+                font-size: 20px;
+            }
+
+            .action-list {
+                max-width: 700px;
+                margin: 0 auto;
+            }
+
+            .action-item {
+                padding: 20px;
+            }
+
+            .action-num {
+                width: 42px;
+                height: 42px;
+                font-size: 16px;
+                margin-right: 20px;
+            }
+
+            .action-text {
+                font-size: 16px;
+            }
+
+            .tools-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+
+            .tool-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .tool-icon {
+                margin-right: 0;
+                margin-bottom: 10px;
+                font-size: 28px;
+            }
+
+            .watermark-footer {
+                font-size: 12px;
+                bottom: 20px;
+                right: 30px;
+            }
+
+            .watermark-diagonal {
+                font-size: 80px;
+                letter-spacing: 20px;
+            }
+
+            .chapter-title {
+                top: 25px;
+                left: 50px;
+                font-size: 12px;
+                padding: 7px 16px;
+            }
+
+            .nav-buttons {
+                right: 25px;
+            }
+
+            .nav-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 18px;
+            }
+
+            .touch-hint {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- 背景效果 -->
+        <div class="bg-grid"></div>
+        <div class="bg-glow bg-glow-1"></div>
+        <div class="bg-glow bg-glow-2"></div>
+
+        <!-- 水印 -->
+        <div class="watermark-diagonal">Ren M T</div>
+        <div class="watermark-footer">Ren M T</div>
+
+        <!-- 音效 -->
+        <audio id="slideSound" preload="auto">
+            <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2teleS8RNGyx5u2nVR8VJEmL2+2kVx8TKkyP2eqhVB8RKUqP2OagUx8PqMmO2OafUR8OqMk=" type="audio/wav">
+        </audio>
+
+        <!-- 导航按钮 -->
+        <div class="nav-buttons">
+            <button class="nav-btn" id="prevBtn" onclick="goToSlide(currentSlide - 1)">↑</button>
+            <button class="nav-btn" id="nextBtn" onclick="goToSlide(currentSlide + 1)">↓</button>
+        </div>
+
+        <!-- ===== 第1页：封面 ===== -->
+        <div class="slide cover-slide active">
+            <div class="chapter-title">序章 · 开启AI赚钱之路</div>
+            <h1 class="cover-title">AI工具副业赚钱指南</h1>
+            <p class="cover-subtitle">6条路径 · 普通人可实操 · <span class="highlight">月入过万</span></p>
+            <div class="cover-tags">
+                <span class="cover-tag">🎯 零门槛</span>
+                <span class="cover-tag">💡 新风口</span>
+                <span class="cover-tag">🚀 立即上手</span>
+                <span class="cover-tag">💰 变现快</span>
+            </div>
+        </div>
+
+        <!-- ===== 第2页：目录 ===== -->
+        <div class="slide">
+            <div class="chapter-title">第一章 · 入门指南</div>
+            <h2 class="slide-title">目录：6条赚钱路径</h2>
+            <div class="toc-grid">
+                <div class="toc-item">
+                    <div class="toc-num">01</div>
+                    <div class="toc-text">AI写作服务</div>
+                </div>
+                <div class="toc-item">
+                    <div class="toc-num">02</div>
+                    <div class="toc-text">AI头像/表情包/电商图</div>
+                </div>
+                <div class="toc-item">
+                    <div class="toc-num">03</div>
+                    <div class="toc-text">数字人短视频</div>
+                </div>
+                <div class="toc-item">
+                    <div class="toc-num">04</div>
+                    <div class="toc-text">AI培训教学</div>
+                </div>
+                <div class="toc-item">
+                    <div class="toc-num">05</div>
+                    <div class="toc-text">AI音频服务</div>
+                </div>
+                <div class="toc-item">
+                    <div class="toc-num">06</div>
+                    <div class="toc-text">AI开发服务</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 第3页：路径一 ===== -->
+        <div class="slide">
+            <div class="chapter-title">第二章 · 四大赚钱路径</div>
+            <h2 class="slide-title">路径一：<span class="highlight">AI写作服务</span></h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">📝</div>
+                    <div class="card-title">小红书笔记</div>
+                    <div class="card-desc">职场干货、省钱攻略、生活方式，种草文案代写</div>
+                    <div class="highlight-box">
+                        <div class="card-price">1000-10000</div>
+                        <div class="card-price-label">元/月</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🎬</div>
+                    <div class="card-title">短视频脚本</div>
+                    <div class="card-desc">口播脚本、带货脚本、剧情脚本专业代写</div>
+                    <div class="highlight-box">
+                        <div class="card-price">30-300</div>
+                        <div class="card-price-label">元/条</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">💼</div>
+                    <div class="card-title">商业文案</div>
+                    <div class="card-desc">商业计划书、简历优化、方案PPT专业撰写</div>
+                    <div class="highlight-box">
+                        <div class="card-price">100-1000</div>
+                        <div class="card-price-label">元/单</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 第4页：路径二 ===== -->
+        <div class="slide">
+            <div class="chapter-title">第二章 · 四大赚钱路径</div>
+            <h2 class="slide-title">路径二：<span class="highlight">AI头像/表情包/电商图</span></h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">🎨</div>
+                    <div class="card-title">卡通头像定制</div>
+                    <div class="card-desc">照片转卡通、婚纱风格、古风头像等专业定制</div>
+                    <div class="highlight-box">
+                        <div class="card-price">9.9-49.9</div>
+                        <div class="card-price-label">元/张</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">😄</div>
+                    <div class="card-title">表情包制作</div>
+                    <div class="card-desc">9张/套表情包，微信表情平台上传赚钱</div>
+                    <div class="highlight-box">
+                        <div class="card-price">9.9</div>
+                        <div class="card-price-label">元/套</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🛒</div>
+                    <div class="card-title">电商主图设计</div>
+                    <div class="card-desc">淘宝/拼多多主图、详情页设计商家服务</div>
+                    <div class="highlight-box">
+                        <div class="card-price">30-100</div>
+                        <div class="card-price-label">元/张</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 第5页：路径三 ===== -->
+        <div class="slide">
+            <div class="chapter-title">第二章 · 四大赚钱路径</div>
+            <h2 class="slide-title">路径三：<span class="highlight">数字人短视频</span></h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">🏢</div>
+                    <div class="card-title">企业宣传片</div>
+                    <div class="card-desc">企业介绍、产品推广、品牌宣传视频制作</div>
+                    <div class="highlight-box">
+                        <div class="card-price">200-500</div>
+                        <div class="card-price-label">元/分钟</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🎓</div>
+                    <div class="card-title">知识口播</div>
+                    <div class="card-desc">律师、医生、理财师等专业科普视频</div>
+                    <div class="highlight-box">
+                        <div class="card-price">1000-5000</div>
+                        <div class="card-price-label">元/月</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🛍️</div>
+                    <div class="card-title">带货视频</div>
+                    <div class="card-desc">商品种草视频，可矩阵化运营批量生产</div>
+                    <div class="highlight-box">
+                        <div class="card-price">5000-10万</div>
+                        <div class="card-price-label">元/月</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 第6页：路径四 ===== -->
+        <div class="slide">
+            <div class="chapter-title">第二章 · 四大赚钱路径</div>
+            <h2 class="slide-title">路径四：<span class="highlight">AI培训教学</span></h2>
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">📹</div>
+                    <div class="card-title">录播课程</div>
+                    <div class="card-desc">20-30节系统课程，一次制作持续售卖</div>
+                    <div class="highlight-box">
+                        <div class="card-price">99-299</div>
+                        <div class="card-price-label">元/课程</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🔴</div>
+                    <div class="card-title">直播带练</div>
+                    <div class="card-desc">每周直播教学，手把手带大家实操</div>
+                    <div class="highlight-box">
+                        <div class="card-price">29.9-99</div>
+                        <div class="card-price-label">元/人</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">👤</div>
+                    <div class="card-title">一对一指导</div>
+                    <div class="card-desc">远程协助解决具体问题，定制化服务</div>
+                    <div class="highlight-box">
+                        <div class="card-price">99-299</div>
+                        <div class="card-price-label">元/小时</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 第7页：执行计划 ===== -->
+        <div class="slide">
+            <div class="chapter-title">第三章 · 实战执行</div>
+            <h2 class="slide-title">四周启动<span class="highlight">执行计划</span></h2>
+            <div class="flow-container">
+                <div class="flow-step">
+                    <div class="flow-circle">W1</div>
+                    <div>
+                        <div class="flow-title">入门期</div>
+                        <div class="flow-tasks">注册工具、体验功能、确定方向</div>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-circle">W2</div>
+                    <div>
+                        <div class="flow-title">测试期</div>
+                        <div class="flow-tasks">发布作品、闲鱼开店、测试定价</div>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-circle">W3</div>
+                    <div>
+                        <div class="flow-title">优化期</div>
+                        <div class="flow-tasks">数据调整、优化话术、多渠道获客</div>
+                    </div>
+                </div>
+                <div class="flow-step">
+                    <div class="flow-circle">W4</div>
+                    <div>
+                        <div class="flow-title">扩展期</div>
+                        <div class="flow-tasks">多方向发展、提升单价、建立品牌</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 第8页：工具清单 ===== -->
+        <div class="slide">
+            <div class="chapter-title">第三章 · 实战执行</div>
+            <h2 class="slide-title">必备<span class="highlight">AI工具清单</span></h2>
+            <div class="table-container">
+                <table class="info-table">
+                    <thead>
+                        <tr>
+                            <th>类型</th>
+                            <th>工具</th>
+                            <th>费用</th>
+                            <th>用途</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>AI写作</td>
+                            <td class="tool-name">Kimi</td>
+                            <td><span class="free-tag">免费</span></td>
+                            <td>写文案、脚本</td>
+                        </tr>
+                        <tr>
+                            <td>AI绘图</td>
+                            <td class="tool-name">即梦AI</td>
+                            <td><span class="free-tag">免费</span></td>
+                            <td>头像、主图</td>
+                        </tr>
+                        <tr>
+                            <td>AI视频</td>
+                            <td class="tool-name">即创</td>
+                            <td><span class="free-tag">免费</span></td>
+                            <td>数字人视频</td>
+                        </tr>
+                        <tr>
+                            <td>抠图</td>
+                            <td class="tool-name">Remove.bg</td>
+                            <td><span class="free-tag">免费</span></td>
+                            <td>AI智能抠图</td>
+                        </tr>
+                        <tr>
+                            <td>剪辑</td>
+                            <td class="tool-name">剪映</td>
+                            <td><span class="free-tag">免费</span></td>
+                            <td>视频剪辑</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ===== 第9页：今日行动 ===== -->
+        <div class="slide">
+            <div class="chapter-title">第四章 · 总结行动</div>
+            <h2 class="slide-title">今日<span class="highlight">行动清单</span></h2>
+            <div class="action-list">
+                <div class="action-item">
+                    <div class="action-num">01</div>
+                    <div class="action-text">
+                        <span class="action-time">今天</span>
+                        下载Kimi APP，体验AI写作
+                    </div>
+                </div>
+                <div class="action-item">
+                    <div class="action-num">02</div>
+                    <div class="action-text">
+                        <span class="action-time">明天</span>
+                        用即梦AI生成一张自己的头像
+                    </div>
+                </div>
+                <div class="action-item">
+                    <div class="action-num">03</div>
+                    <div class="action-text">
+                        <span class="action-time">后天</span>
+                        闲鱼发布第一个商品
+                    </div>
+                </div>
+                <div class="action-item">
+                    <div class="action-num">04</div>
+                    <div class="action-text">
+                        <span class="action-time">本周</span>
+                        每天发1条小红书笔记
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 第10页：工具详解 ===== -->
+        <div class="slide">
+            <div class="chapter-title">第四章 · 总结行动</div>
+            <h2 class="slide-title">推荐<span class="highlight">工具详解</span></h2>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-icon">✍️</div>
+                    <div>
+                        <div class="tool-name">Kimi</div>
+                        <div class="tool-use">AI写作全能助手</div>
+                    </div>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🎨</div>
+                    <div>
+                        <div class="tool-name">即梦AI</div>
+                        <div class="tool-use">国产AI绘图神器</div>
+                    </div>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🎬</div>
+                    <div>
+                        <div class="tool-name">即创</div>
+                        <div class="tool-use">抖音官方AI工具</div>
+                    </div>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🎥</div>
+                    <div>
+                        <div class="tool-name">HeyGen</div>
+                        <div class="tool-use">数字人视频制作</div>
+                    </div>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">✂️</div>
+                    <div>
+                        <div class="tool-name">Remove.bg</div>
+                        <div class="tool-use">AI智能抠图</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 第11页：结束页 ===== -->
+        <div class="slide end-slide">
+            <div class="chapter-title">终章 · 行动开始</div>
+            <h1 class="end-title">立即行动</h1>
+            <p class="end-subtitle">开启你的AI副业之路</p>
+            <div class="end-slogan">记住：<span class="highlight">先完成，再完美</span></div>
+        </div>
+
+        <!-- 进度条 -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress"></div>
+        </div>
+
+        <!-- 页码指示器 -->
+        <div class="page-indicator" id="indicator"></div>
+
+        <!-- 触摸提示 -->
+        <div class="touch-hint">↑ ↓ 滑动翻页</div>
+    </div>
+
+    <script>
+        // ===== 幻灯片控制 =====
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        let currentSlide = 0;
+        let isAnimating = false;
+
+        // 初始化页码指示器
+        const indicator = document.getElementById('indicator');
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'page-dot' + (i === 0 ? ' active' : '');
+            dot.addEventListener('click', () => goToSlide(i));
+            indicator.appendChild(dot);
+        }
+
+        // 播放音效
+        function playSound() {
+            try {
+                const audio = document.getElementById('slideSound');
+                audio.volume = 0.15;
+                audio.currentTime = 0;
+                audio.play().catch(() => {});
+            } catch(e) {}
+        }
+
+        // 更新进度条
+        function updateProgress() {
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        // 更新页码指示器
+        function updateIndicator() {
+            const dots = document.querySelectorAll('.page-dot');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        // 更新按钮状态
+        function updateButtons() {
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        // 切换幻灯片
+        function goToSlide(index) {
+            if (isAnimating || index < 0 || index >= totalSlides || index === currentSlide) return;
+            
+            isAnimating = true;
+            playSound();
+            
+            // 移除旧活动状态
+            slides[currentSlide].classList.remove('active');
+            
+            // 更新索引
+            currentSlide = index;
+            
+            // 添加新活动状态
+            slides[currentSlide].classList.add('active');
+            
+            updateProgress();
+            updateIndicator();
+            updateButtons();
+            
+            // 重置动画锁
+            setTimeout(() => {
+                isAnimating = false;
+            }, 400);
+        }
+
+        // 键盘控制
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                e.preventDefault();
+                goToSlide(currentSlide + 1);
+            } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                e.preventDefault();
+                goToSlide(currentSlide - 1);
+            }
+        });
+
+        // 触摸滑动 - 修复方向判断
+        let touchStartY = 0;
+        let touchEndY = 0;
+        
+        document.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+        
+        document.addEventListener('touchmove', (e) => {
+            // 防止页面滚动
+            if (Math.abs(e.touches[0].clientY - touchStartY) > 10) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        document.addEventListener('touchend', (e) => {
+            touchEndY = e.changedTouches[0].clientY;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const diff = touchStartY - touchEndY;
+            const threshold = 50;
+            
+            if (Math.abs(diff) > threshold) {
+                if (diff > 0) {
+                    // 向上滑 -> 下一页
+                    goToSlide(currentSlide + 1);
+                } else {
+                    // 向下滑 -> 上一页
+                    goToSlide(currentSlide - 1);
+                }
+            }
+        }
+
+        // 鼠标滚轮 - 添加防抖
+        let wheelTimeout = null;
+        document.addEventListener('wheel', (e) => {
+            if (wheelTimeout) return;
+            
+            wheelTimeout = setTimeout(() => {
+                wheelTimeout = null;
+            }, 600);
+            
+            if (e.deltaY > 0 || e.deltaX > 0) {
+                goToSlide(currentSlide + 1);
+            } else if (e.deltaY < 0 || e.deltaX < 0) {
+                goToSlide(currentSlide - 1);
+            }
+        }, { passive: true });
+
+        // 初始化
+        updateProgress();
+        updateButtons();
+    </script>
+</body>
+</html>
